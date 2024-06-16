@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import useForm from "./useForm";
 import validate from "./LoginFormValidationRules";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import UserLoginIcon from "./UserLoginIcon";
 
 const LoginForm = props => {
@@ -98,6 +98,9 @@ const LoginForm = props => {
               >
                 Login
               </button>
+              <p className="mt-4 text-center">
+              Don't have an account? <Link to="/create-user">Register here</Link>
+              </p>
             </form>
           </div>
         </div>

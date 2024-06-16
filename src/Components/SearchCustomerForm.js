@@ -7,6 +7,8 @@ const SearchCustomerForm = () => {
   const [email, setEmail] = useState('');
   const [id, setId] = useState('');
   const [results, setResults] = useState([]);
+  const [noResultsMessage, setNoResultsMessage] = useState('');
+  const [error, setError] = useState('');
 
   const handleSearch = async (event) => {
     event.preventDefault();
@@ -14,10 +16,22 @@ const SearchCustomerForm = () => {
       const response = await axios.get('http://localhost:5000/customer/search', {
         params: { afm, email, id },
       });
-      setResults(response.data);
-    } catch (error) {
-      console.error('Error fetching search results:', error);
-    }
+      if (response.data.length === 0) {
+        // If no results are returned
+        setResults(response.data);
+        console.log("No results found.");
+        // Optionally inform the user with a message or UI indication
+        setNoResultsMessage("No results found.");
+      } else {
+        // If results are found
+        setResults(response.data);
+        setNoResultsMessage(""); // Clear any previous "no results" message
+      }
+      } catch (error) {
+        console.error('Error fetching search results:', error);
+        //Optionally set a state to display an error message to the user
+        setError('Error fetching search results. Please try again.'); 
+      }
   };
 
   return (
@@ -63,7 +77,8 @@ const SearchCustomerForm = () => {
           </Card>
         </Col>
       </Row>
-
+      {results.length === 0 && (<p style={{ textAlign: 'center', marginTop: '20px' }}>{noResultsMessage}</p>
+      )}
       {results.length > 0 && (
         <Row className="justify-content-md-center mt-5">
           <Col md={10}>
@@ -95,6 +110,8 @@ const SearchCustomerForm = () => {
           </Col>
         </Row>
       )}
+    {/* Displaying error message if there's an error */}
+    {error && <p>{error}</p>}
     </Container>
   );
 };

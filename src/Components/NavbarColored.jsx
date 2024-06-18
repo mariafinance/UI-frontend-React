@@ -26,6 +26,9 @@ function NavbarColored() {
             <Nav.Link as = "span">
             <Link to={"/searchcustomer"} className="text-white text-decoration-none px-3">Search Customer</Link>
             </Nav.Link>
+            <Nav.Link as = "span">
+            <Link to={"/customermanagement"} className="text-white text-decoration-none px-3">Customer Management</Link>
+            </Nav.Link>
           </Nav>
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Form, Button, Container } from 'react-bootstrap';
+import axios from 'axios';
 
 function CreateUserForm() {
   const [formData, setFormData] = useState({
@@ -13,11 +14,22 @@ function CreateUserForm() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+  const [submissionStatus, setSubmissionStatus] = useState({
+    success: false,
+    error: null,
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add code to handle form submission (e.g., send data to server)
-    console.log('Form submitted:', formData);
+    axios.post('http://localhost:5000/user/register',formData)
+      .then((response) => {
+        setSubmissionStatus({ success: true, error: null });
+        console.log(response.data);
+      })
+      .catch((error) => {
+        setSubmissionStatus({ success: false, error: error.message });
+        console.error(error);
+      });
   };
 
   return (
@@ -73,6 +85,13 @@ function CreateUserForm() {
             <Button variant="primary" type="submit" className="button is-block is-info is-fullwidth">
               Submit
             </Button>
+            {submissionStatus.success ? (
+              <p style={{ color: 'green' }}>User created successfully!</p>
+            ) : (
+              submissionStatus.error && (
+                <p style={{ color: 'red' }}>Error: {submissionStatus.error}</p>
+              )
+            )}
           </Form>
         </div>
       </div>    

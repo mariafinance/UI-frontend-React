@@ -5,6 +5,7 @@ import CreateUserForm from './Components/CreateUserForm';
 import LoginForm from './Components/LoginForm';
 import CreateCustomerForm from './Components/CreateCustomerForm';
 import SearchCustomerForm from './Components/SearchCustomerForm';
+import CustomerManagementForm from './Components/CustomerManagementForm';
 
 const AppRoutes = () => (
     <Routes>
@@ -17,6 +18,7 @@ const AppRoutes = () => (
     <Route path="*" element={<Navigate to="/" />} /> 
     <Route path="/createcustomer" element={<CreateCustomerForm />} />
     <Route path='/searchcustomer' element={<SearchCustomerForm />} />
+    <Route path='/customermanagement' element={<CustomerManagementForm/>} />
     </Routes>
 );
 

@@ -2,53 +2,45 @@ import React, { useState } from "react";
 import useForm from "./useForm";
 import validate from "./LoginFormValidationRules";
 import axios from "axios";
-import { useNavigate, Link } from 'react-router-dom';
-import UserLoginIcon from "./UserLoginIcon";
+import { useNavigate, Link } from "react-router-dom";
+import { Form, Button, Modal } from "react-bootstrap";
 
-const LoginForm = props => {
+const LoginForm = () => {
   const { values, errors, handleChange, handleSubmit } = useForm(
     login,
     validate
   );
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const navigate = useNavigate();
 
   async function login() {
     try {
-        const response = await axios.post('http://localhost:5000/user/login', {
-            email: values.email,
-            password: values.password
-        });
-        const { access_token, msg, email } = response.data;
-        if (access_token) {
-            // Login successful, store the JWT token in localStorage or sessionStorage
-            localStorage.setItem('access_token', access_token);
-            console.log(msg); // Optionally log the success message
-            // Update loggedInUser state with username
-             //setLoggedInUser({ email });
-        // // Fetch user information after successful login
-        //   axios.get('/api/user')
-        //     .then(response => {
-        //       if (response.data.username) {
-        //         setLoggedInUser(response.data);
-        //         props.parentCallback(true); // Assuming this is to notify parent of login state
-                navigate('/'); // Redirect to default page after login
-        //       }
-        //     })
-        //     .catch(error => {
-        //       console.error('Error fetching user:', error);
-        //     });
-        } else {
-            // Handle invalid credentials or other login errors
-            console.error(msg);
-            // Optionally display an error message to the user
-        }
+      const response = await axios.post("http://localhost:5000/user/login", {
+        email: values.email,
+        password: values.password,
+      });
+      const { access_token, msg } = response.data;
+      if (access_token) {
+        localStorage.setItem("access_token", access_token);
+        setModalMessage("Login successful.");
+        setShowModal(true);
+        setTimeout(() => {
+          setShowModal(false);
+          navigate("/"); // Redirect to home page after successful login
+        }, 2000); // Hide modal after 2 seconds
+      } else {
+        setModalMessage("Invalid username or password.");
+        setShowModal(true);
+      }
     } catch (error) {
-        // Handle network errors or other exceptions
-        console.error('Error logging in:', error.message);
-        // Optionally display an error message to the user
+      console.error("Error logging in:", error.message);
+      setModalMessage("Error logging in. Please try again.");
+      setShowModal(true);
     }
-};
+  }
+
+  const handleCloseModal = () => setShowModal(false);
 
   return (
     <div className="section is-fullheight">
@@ -56,7 +48,7 @@ const LoginForm = props => {
         <div className="column is-6 is-offset-3">
           <div className="box">
             <h1 className="mb-4 text-center">Login</h1>
-            <form onSubmit={handleSubmit} Validate>
+            <Form onSubmit={handleSubmit} noValidate>
               <div className="field">
                 <label className="label">Email Address</label>
                 <div className="control">
@@ -87,25 +79,38 @@ const LoginForm = props => {
                     value={values.password || ""}
                     required
                   />
+                  {errors.password && (
+                    <p className="help is-danger">{errors.password}</p>
+                  )}
                 </div>
-                {errors.password && (
-                  <p className="help is-danger">{errors.password}</p>
-                )}
               </div>
-              <button
+              <Button
                 type="submit"
                 className="button is-block is-info is-fullwidth"
               >
                 Login
-              </button>
+              </Button>
               <p className="mt-4 text-center">
-              Don't have an account? <Link to="/create-user">Register here</Link>
+                Don't have an account?{" "}
+                <Link to="/create-user">Register here</Link>
               </p>
-            </form>
+            </Form>
           </div>
         </div>
       </div>
-      {loggedInUser && <UserLoginIcon loggedInUser={loggedInUser} />}
+
+      {/* Modal for displaying login status */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Login Status</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>{modalMessage}</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

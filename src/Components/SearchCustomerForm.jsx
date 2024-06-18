@@ -35,49 +35,62 @@ const SearchCustomerForm = () => {
   };
 
   return (
-    <Container>
-      <Row className="justify-content-md-center mt-5">
-        <Col md={8}>
-          <Card>
-            <Card.Header as="h5">Search Customer</Card.Header>
+    <Container className="section is-fullheight">
+      <Row className="justify-content-md-center mt-8">
+        <Col md={10}>
+          <Card >
+            <Card.Header as="h4" className='bg-dark text-bg-primary' 
+            // style={{ height: '80px', paddingTop: '20px' }}
+            >Search Customer</Card.Header>
             <Card.Body>
-              <Form onSubmit={handleSearch}>
-                <Form.Group controlId="afm">
-                  <Form.Label>AFM</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter AFM"
-                    value={afm}
-                    onChange={(e) => setAfm(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group controlId="email" className="mt-3">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    type="email"
-                    placeholder="Enter email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </Form.Group>
-                <Form.Group controlId="id" className="mt-3">
-                  <Form.Label>ID</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter ID"
-                    value={id}
-                    onChange={(e) => setId(e.target.value)}
-                  />
-                </Form.Group>
-                <Button variant="primary" type="submit" className="mt-4">
-                  Search
-                </Button>
+              <Form onSubmit={handleSearch}>xs
+                <Row className="mb-3">
+                <Form.Group as={Col} controlId="id">
+                    <Form.Label>ID</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter ID"
+                      value={id}
+                      onChange={(e) => setId(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} controlId="afm">
+                    <Form.Label>AFM</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter AFM"
+                      value={afm}
+                      onChange={(e) => setAfm(e.target.value)}
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} controlId="email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                      type="email"
+                      placeholder="Enter email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
+                  </Form.Group>
+                </Row>
+                <Row className="justify-content-end">
+                  <Col className="text-end">
+                    <Button variant="primary" type="submit">
+                      Search
+                    </Button>
+                  </Col>
+                </Row>
               </Form>
             </Card.Body>
           </Card>
         </Col>
       </Row>
-      {results.length === 0 && (<p style={{ textAlign: 'center', marginTop: '20px' }}>{noResultsMessage}</p>
+      {results.length === 0 && (
+        <Row className="justify-content-md-center mt-5">
+          <Col md={10}>
+            <p className="text-center mt-4">{noResultsMessage}</p>
+          </Col>
+        </Row>
       )}
       {results.length > 0 && (
         <Row className="justify-content-md-center mt-5">
@@ -110,8 +123,13 @@ const SearchCustomerForm = () => {
           </Col>
         </Row>
       )}
-    {/* Displaying error message if there's an error */}
-    {error && <p>{error}</p>}
+      {error && (
+        <Row className="justify-content-md-center mt-5">
+          <Col md={10}>
+            <p className="text-center text-danger mt-4">{error}</p>
+          </Col>
+        </Row>
+      )}
     </Container>
   );
 };

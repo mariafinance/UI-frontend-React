@@ -8,8 +8,6 @@ const useLoginForm = (callback, validate) => {
   const [isSubmitting] = useState(false);
   const navigate = useNavigate();
 
-
-
   useEffect(() => {
     if (Object.keys(errors).length === 0 && isSubmitting) {
       callback();

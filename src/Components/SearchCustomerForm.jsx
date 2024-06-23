@@ -40,10 +40,9 @@ const SearchCustomerForm = () => {
         <Col md={10}>
           <Card >
             <Card.Header as="h4" className='bg-dark text-bg-primary' 
-            // style={{ height: '80px', paddingTop: '20px' }}
             >Search Customer</Card.Header>
             <Card.Body>
-              <Form onSubmit={handleSearch}>xs
+              <Form onSubmit={handleSearch}>
                 <Row className="mb-3">
                 <Form.Group as={Col} controlId="id">
                     <Form.Label>ID</Form.Label>

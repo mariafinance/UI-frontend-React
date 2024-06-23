@@ -12,9 +12,7 @@ export default function App() {
     <Router>
       <div className="App">
         <NavbarColored />
-        <div className="pt-5"> {/* Bootstrap class for padding-top */}
           <AppRoutes />
-        </div>
       </div>
     </Router>
   )

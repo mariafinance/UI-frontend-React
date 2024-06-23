@@ -6,20 +6,37 @@ import LoginForm from './Components/LoginForm';
 import CreateCustomerForm from './Components/CreateCustomerForm';
 import SearchCustomerForm from './Components/SearchCustomerForm';
 import CustomerManagementForm from './Components/CustomerManagementForm';
+import PrivateRoute from './Components/PrivateRoute';
+import AboutProject from './Components/AboutProject';
+
 
 const AppRoutes = () => (
-    <Routes>
-    {/* <Route path="/" element={<Home />} /> */}
-    <Route path="/" element={<Home/>} />
-    {/* <Route path="/" exact component={Home} /> */}
+  <Routes>
+    <Route path="/" element={
+      <PrivateRoute>
+        <Home/>
+      </PrivateRoute>
+    } />
+    <Route path="/about" element={<AboutProject />} />
     <Route path="/create-user" element={<CreateUserForm />} />
     <Route path="/login" element={<LoginForm />} />
-    {/* In this example, if none of the defined routes match, the <Navigate> component will redirect to the home page ("/"). */}
-    <Route path="*" element={<Navigate to="/" />} /> 
-    <Route path="/createcustomer" element={<CreateCustomerForm />} />
-    <Route path='/searchcustomer' element={<SearchCustomerForm />} />
-    <Route path='/customermanagement' element={<CustomerManagementForm/>} />
-    </Routes>
+    <Route path="/createcustomer" element={
+      <PrivateRoute>
+        <CreateCustomerForm />
+      </PrivateRoute>
+    } />
+    <Route path="/searchcustomer" element={
+      <PrivateRoute>
+        <SearchCustomerForm />
+      </PrivateRoute>
+    } />
+    <Route path="/customermanagement" element={
+      <PrivateRoute>
+        <CustomerManagementForm />
+      </PrivateRoute>
+    } />
+    <Route path="*" element={<Navigate to="/" />} />
+  </Routes>
 );
 
-export default AppRoutes ;
+export default AppRoutes;

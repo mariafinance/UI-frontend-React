@@ -1,17 +1,20 @@
 import React, { useState } from "react";
-import useForm from "./useForm";
 import validate from "./LoginFormValidationRules";
+import useLoginForm from "./useLoginForm";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import { Form, Button, Modal } from "react-bootstrap";
+import { Alert, Form } from "react-bootstrap";
 
 const LoginForm = () => {
-  const { values, errors, handleChange, handleSubmit } = useForm(
+  const { values, errors, handleChange, handleSubmit } = useLoginForm(
     login,
     validate
   );
-  const [showModal, setShowModal] = useState(false);
-  const [modalMessage, setModalMessage] = useState("");
+  const [submissionStatus, setSubmissionStatus] = useState({
+    success: false,
+    message: "",
+    error: null,
+  });
   const navigate = useNavigate();
 
   async function login() {
@@ -23,24 +26,18 @@ const LoginForm = () => {
       const { access_token, msg } = response.data;
       if (access_token) {
         localStorage.setItem("access_token", access_token);
-        setModalMessage("Login successful.");
-        setShowModal(true);
-        setTimeout(() => {
-          setShowModal(false);
-          navigate("/"); // Redirect to home page after successful login
-        }, 2000); // Hide modal after 2 seconds
+        localStorage.setItem("loggedInEmail", values.email); 
+        setSubmissionStatus({ success: true, message: "Login successful.", error: null });
+        navigate("/"); // Redirect to home page after successful login
       } else {
-        setModalMessage("Invalid username or password.");
-        setShowModal(true);
+        setSubmissionStatus({ success: false, message: "Invalid username or password.", error: null });
+        console.error(msg);
       }
     } catch (error) {
-      console.error("Error logging in:", error.message);
-      setModalMessage("Error logging in. Please try again.");
-      setShowModal(true);
+      console.error('Error logging in:', error.message);
+      setSubmissionStatus({ success: false, message: "Error logging in. Please try again.", error: error.message });
     }
   }
-
-  const handleCloseModal = () => setShowModal(false);
 
   return (
     <div className="section is-fullheight">
@@ -48,7 +45,12 @@ const LoginForm = () => {
         <div className="column is-6 is-offset-3">
           <div className="box">
             <h1 className="mb-4 text-center">Login</h1>
-            <Form onSubmit={handleSubmit} noValidate>
+            {submissionStatus.message && (
+              <Alert variant={submissionStatus.success ? "success" : "danger"}>
+                {submissionStatus.message}
+              </Alert>
+            )}
+            <Form onSubmit={handleSubmit} Validate>
               <div className="field">
                 <label className="label">Email Address</label>
                 <div className="control">
@@ -84,33 +86,29 @@ const LoginForm = () => {
                   )}
                 </div>
               </div>
-              <Button
+              <button
                 type="submit"
                 className="button is-block is-info is-fullwidth"
               >
                 Login
-              </Button>
+              </button>
               <p className="mt-4 text-center">
                 Don't have an account?{" "}
                 <Link to="/create-user">Register here</Link>
+              </p>
+              <p>
+                {submissionStatus.success ? (
+                <p style={{ color: 'green' }}>User created successfully!</p>
+              ) : (
+                submissionStatus.error && (
+                  <p style={{ color: 'red' }}>Error: {submissionStatus.error}</p>
+                )
+              )}
               </p>
             </Form>
           </div>
         </div>
       </div>
-
-      {/* Modal for displaying login status */}
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Login Status</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{modalMessage}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };

@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
-const useForm = (callback, validate) => {
+const useLoginForm = (callback, validate) => {
   const [values, setValues] = useState({});
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [errors ] = useState({});
+  const [isSubmitting] = useState(false);
+  const navigate = useNavigate();
 
 
 
@@ -27,6 +27,7 @@ const useForm = (callback, validate) => {
         if (access_token) {
             // Login successful, store the JWT token in localStorage or sessionStorage
             localStorage.setItem('access_token', access_token);
+            localStorage.setItem("loggedInEmail", values.email); 
             console.log(msg); // Optionally log the success message
             // Redirect to the home page upon sucessfull login
             navigate('/');
@@ -59,4 +60,4 @@ const useForm = (callback, validate) => {
   };
 };
 
-export default useForm;
+export default useLoginForm;

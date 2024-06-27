@@ -33,12 +33,10 @@ const useLoginForm = (callback, validate) => {
         } else {
             // Handle invalid credentials or other login errors
             console.error(msg);
-            // Optionally display an error message to the user
         }
     } catch (error) {
         // Handle network errors or other exceptions
         console.error('Error logging in:', error.message);
-        // Optionally display an error message to the user
     }
 };
 

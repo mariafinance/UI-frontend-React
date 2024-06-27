@@ -47,7 +47,7 @@ const Home = () => {
           <Modal.Title className="text-black">Information</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p className="text-center text-pink">I am Maria Michail and this is my CRUD customer management app.</p>
+          <p className="text-center text-pink">I am Maria Michail and this is my CRUD customer management app. MarCus App name is made from Mar by Maria & Cus by Customers, aka MarCus.</p>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={toggleModal}>

@@ -1,6 +1,7 @@
 # This is MarCus Customer Management App written by Maria Michail for CF5
 
 This App was written using Javascript, Bootstrap, React
+https://github.com/mariafinance/UI-frontend-React
 
 ## Getting Started with Create React App
 

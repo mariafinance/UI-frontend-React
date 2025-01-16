@@ -15,6 +15,7 @@
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "bulma": "^1.0.1",
+    "gh-pages": "^6.3.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
     "react-bootstrap-icons": "^1.11.4",
@@ -27,7 +28,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -49,5 +52,6 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
-  }
+  },
+  "homepage": "https://mariafinance.github.io/UI-frontend-React/"
 }
